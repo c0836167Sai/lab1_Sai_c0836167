@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var crossScore: UILabel!
    
     
-    
+    var tapCheck: UIButton!
     
     var CROSS = "X"
     var NOUGHT = "O"
@@ -49,7 +49,37 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         initBoard()
+        becomeFirstResponder()                  //Shake motion 1st responder
     }
+    
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
+    
+    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        
+        //SHAKE MOTION BEGAN
+    
+    }
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        
+        //SHAKE MOTION ENDED
+        
+        if(motion == .motionShake && currentTurn == Turn.Nought){
+            tapCheck.setTitle(nil, for: .normal)
+            tapCheck.isEnabled = true
+            currentTurn = Turn.Cross
+            
+        }
+        else if(motion == .motionShake && currentTurn == Turn.Cross){
+            tapCheck.setTitle(nil, for: .normal)
+            tapCheck.isEnabled = true
+            currentTurn = Turn.Nought
+        }
+        
+    }
+    
     
     func initBoard()
     {
@@ -155,6 +185,7 @@ class ViewController: UIViewController {
     {
         if(sender.title(for: .normal) == nil)
         {
+            tapCheck = sender
             if(currentTurn == Turn.Nought)
             {
                 sender.setTitle(NOUGHT, for: .normal)
